@@ -31,6 +31,10 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.danikula.videocache.HttpProxyCacheServer;
+import com.example.mediatest.netplaytest.App;
+import com.yzq.zxinglibrary.android.CaptureActivity;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -139,6 +143,8 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.test:
+                        Intent intent = new Intent(MainActivity.this, CaptureActivity.class);
+                        startActivityForResult(intent, 4);
                         drawerLayout.closeDrawers();
                         break;
                     case R.id.test2:
@@ -199,42 +205,58 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         intent.addCategory(Intent.CATEGORY_OPENABLE);
         startActivityForResult(intent, 1);
     }
-
+    private HttpProxyCacheServer getProxy() {
+        // should return single instance of HttpProxyCacheServer shared for whole app.
+        return App.getProxy(getApplicationContext());
+    }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode == Activity.RESULT_OK && requestCode == 1) {
-            Uri uri = data.getData();
-            String[] proj = {MediaStore.Images.Media.DATA};
-            Cursor cursor = getContentResolver().query(uri, proj, null, null, null);
-            int index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-            cursor.moveToFirst();
-            String img_path = cursor.getString(index);
-            cursor.close();
-            File file = new File(img_path);
-            Movie movie = new Movie();
-            movie.setTitle(file.getName());
-            movie.setPath(file.getAbsolutePath());
-            list.add(movie);
-            //Log.e("onActivityResult: ", file.getAbsolutePath());
+        if (resultCode == Activity.RESULT_OK) {
+            switch (requestCode) {
+                case 1:
+                    Uri uri = data.getData();
+                    String[] proj = {MediaStore.Images.Media.DATA};
+                    Cursor cursor = getContentResolver().query(uri, proj, null, null, null);
+                    int index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+                    cursor.moveToFirst();
+                    String img_path = cursor.getString(index);
+                    cursor.close();
+                    File file = new File(img_path);
+                    Movie movie = new Movie();
+                    movie.setTitle(file.getName());
+                    movie.setPath(file.getAbsolutePath());
+                    list.add(movie);
+                    break;
+                case 2:
+                    getData();
+                    break;
+                case 3:
+                    Uri uri1 = data.getData();
+                    String[] proj1 = {MediaStore.Images.Media.DATA};
+                    Cursor cursor1 = getContentResolver().query(uri1, proj1, null, null, null);
+                    int index1 = cursor1.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+                    cursor1.moveToFirst();
+                    String img_path1 = cursor1.getString(index1);
+                    cursor1.close();
+                    File file1 = new File(img_path1);
+                    danmuPath = file1.getAbsolutePath();
+                    Intent intent = new Intent(MainActivity.this, PlayerActivity.class);
+                    intent.putExtra("path", videoPath);
+                    intent.putExtra("danmupath", danmuPath);
+                    startActivity(intent);
+                    break;
+                case 4:
+                    if (data != null) {
+                        String content = data.getStringExtra(com.yzq.zxinglibrary.common.Constant.CODED_CONTENT);
+                        HttpProxyCacheServer proxy = getProxy();
+                        String proxyUrl = proxy.getProxyUrl(content);
+                        Intent intent2=new Intent(MainActivity.this, PlayerActivity.class);
+                        intent2.putExtra("path", proxyUrl);
+                        startActivity(intent2);
+                    }
+            }
         }
-        if (requestCode == 2) {
-            getData();
-        }
-        if (requestCode == 3) {
-            Uri uri = data.getData();
-            String[] proj = {MediaStore.Images.Media.DATA};
-            Cursor cursor = getContentResolver().query(uri, proj, null, null, null);
-            int index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-            cursor.moveToFirst();
-            String img_path = cursor.getString(index);
-            cursor.close();
-            File file = new File(img_path);
-            danmuPath = file.getAbsolutePath();
-            Intent intent = new Intent(MainActivity.this, PlayerActivity.class);
-            intent.putExtra("path", videoPath);
-            intent.putExtra("danmupath", danmuPath);
-            startActivity(intent);
-        }
+
         super.onActivityResult(requestCode, resultCode, data);
     }
 

@@ -50,4 +50,9 @@ dependencies {
     implementation 'com.github.ctiao:ndkbitmap-armv7a:0.9.21'
     implementation 'com.github.ctiao:ndkbitmap-armv5:0.9.21'
     implementation 'com.github.ctiao:ndkbitmap-x86:0.9.21'
+
+    implementation 'com.github.yuzhiqiang1993:zxing:2.1.8'
+    implementation 'com.danikula:videocache:2.7.0'
+
+
 }
