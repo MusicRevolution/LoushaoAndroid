@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.MediaStore;
@@ -75,7 +76,6 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         permissionGranted();
-        getData();
         adapter = new ListViewAdapter(this, list);
         listview.setAdapter(adapter);
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -143,8 +143,18 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.test:
-                        Intent intent = new Intent(MainActivity.this, CaptureActivity.class);
-                        startActivityForResult(intent, 4);
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
+                            if (ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.CAMERA) !=
+                                    PackageManager.PERMISSION_GRANTED) {
+                                ActivityCompat.requestPermissions(MainActivity.this, new String[]{
+                                        Manifest.permission.CAMERA}, 11);
+                            } else {
+                                doScan();
+                            }
+                        }else {
+                            doScan();
+                        }
+
                         drawerLayout.closeDrawers();
                         break;
                     case R.id.test2:
@@ -205,10 +215,12 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         intent.addCategory(Intent.CATEGORY_OPENABLE);
         startActivityForResult(intent, 1);
     }
+
     private HttpProxyCacheServer getProxy() {
         // should return single instance of HttpProxyCacheServer shared for whole app.
         return App.getProxy(getApplicationContext());
     }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == Activity.RESULT_OK) {
@@ -228,7 +240,6 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                     list.add(movie);
                     break;
                 case 2:
-                    getData();
                     break;
                 case 3:
                     Uri uri1 = data.getData();
@@ -250,7 +261,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                         String content = data.getStringExtra(com.yzq.zxinglibrary.common.Constant.CODED_CONTENT);
                         HttpProxyCacheServer proxy = getProxy();
                         String proxyUrl = proxy.getProxyUrl(content);
-                        Intent intent2=new Intent(MainActivity.this, PlayerActivity.class);
+                        Intent intent2 = new Intent(MainActivity.this, PlayerActivity.class);
                         intent2.putExtra("path", proxyUrl);
                         startActivity(intent2);
                     }
@@ -270,7 +281,10 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         });
         super.onResume();
     }
-
+    private void doScan(){
+        Intent intent = new Intent(MainActivity.this, CaptureActivity.class);
+        startActivityForResult(intent, 4);
+    }
     private long exitTime;
 
     @Override
@@ -295,12 +309,39 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     }
 
     private void permissionGranted() {
-        if (ContextCompat.checkSelfPermission(this,
-                Manifest.permission_group.STORAGE) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this,
-                    new String[]{Manifest.permission_group.STORAGE}, 2);
-        } else {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
+            if (ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission_group.STORAGE) !=
+                    PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(MainActivity.this, new String[]{
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE
+                }, 10);
+            } else {
+                getData();
+            }
+        }else {
+            getData();
+        }
+    }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        switch (requestCode) {
+            case 10:
+                if (grantResults.length>0&&grantResults[0]==PackageManager.PERMISSION_GRANTED){
+                    getData();
+                }else {
+                    Toast.makeText(MainActivity.this,"没有storage权限",Toast.LENGTH_SHORT).show();
+                }
+                break;
+            case 11:
+                if (grantResults.length>0&&grantResults[0]==PackageManager.PERMISSION_GRANTED){
+                    doScan();
+                }else {
+                    Toast.makeText(MainActivity.this,"没有carema权限",Toast.LENGTH_SHORT).show();
+                }
+                break;
+            default:
+                break;
         }
     }
 }

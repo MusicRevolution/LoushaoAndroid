@@ -11,7 +11,7 @@ public class SplashActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
-        Utils.isFileExists(Constant.basePath);
+        //Utils.isFileExists(Constant.basePath);
         startService(new Intent(this, FtpService.class));
         new Handler().postDelayed(new Runnable() {
             @Override
