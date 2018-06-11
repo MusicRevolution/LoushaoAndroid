@@ -38,6 +38,7 @@
 -keep interface android.support.constraint.** { *; }
 -keep class com.alibaba.fastjson.** {*;}    #保持第三方包fastjson不被混淆，否则会报错
 
+-keep class org.apache.** {*;}
 #butterknife
 -keep class butterknife.** { *; }
 -dontwarn butterknife.internal.**
@@ -49,7 +50,7 @@
     @butterknife.* <methods>;
 }
 
-#retrofit2  混淆
+#retrofit2
 -dontwarn javax.annotation.**
 -dontwarn javax.inject.**
 # OkHttp3
