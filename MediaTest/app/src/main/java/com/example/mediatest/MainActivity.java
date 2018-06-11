@@ -22,7 +22,6 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -34,13 +33,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.danikula.videocache.HttpProxyCacheServer;
-import com.example.mediatest.adapter.ListViewAdapter;
-import com.example.mediatest.bean.Movie;
-import com.example.mediatest.ftp.FtpService;
-import com.example.mediatest.ftp.Utils;
-import com.example.mediatest.model.GetUrlListener;
-import com.example.mediatest.model.GetUrlModel;
-import com.example.mediatest.player.PlayerActivity;
+import com.example.mediatest.netplaytest.App;
 import com.yzq.zxinglibrary.android.CaptureActivity;
 
 import java.io.File;
@@ -53,7 +46,7 @@ import butterknife.OnClick;
 
 public class MainActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
 
-    private static final String TAG = "MainActivity";
+
     @BindView(R.id.nav_view)
     NavigationView navView;
     @BindView(R.id.drawerLayout)
@@ -69,23 +62,6 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     String path = Constant.basePath;
     String videoPath = null;
     String danmuPath = null;
-    String downUrl=null;
-    GetUrlListener listener = new GetUrlListener() {
-        @Override
-        public void onSuccess(String url) {
-            Log.e(TAG, "onSuccess: " + url);
-            //Toast.makeText(MainActivity.this, "地址：" + url, Toast.LENGTH_SHORT).show();
-            downUrl=url;
-            Intent intent=new Intent(MainActivity.this,DownloadActivity.class);
-            intent.putExtra("url",downUrl);
-            startActivity(intent);
-        }
-
-        @Override
-        public void onFailure(String msg) {
-
-        }
-    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -110,17 +86,10 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         });
     }
 
-    private void getDownUrl() {
-        GetUrlModel model = new GetUrlModel();
-        model.setListener(listener);
-        model.getUrl();
-    }
-
     private void setheadView() {
         View view = navView.getHeaderView(0);
         TextView ftpinfo = view.findViewById(R.id.ftpInfo);
         String ip = Utils.getIp(this);
-
         if (TextUtils.isEmpty(ip)) {
             ftpinfo.setText("获取不到IP，请连接网络");
         } else {
@@ -174,7 +143,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.test:
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
                             if (ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.CAMERA) !=
                                     PackageManager.PERMISSION_GRANTED) {
                                 ActivityCompat.requestPermissions(MainActivity.this, new String[]{
@@ -182,7 +151,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                             } else {
                                 doScan();
                             }
-                        } else {
+                        }else {
                             doScan();
                         }
 
@@ -190,13 +159,11 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                         break;
                     case R.id.test2:
                         drawerLayout.closeDrawers();
-                        getDownUrl();
 
                         break;
                     case R.id.test3:
                         drawerLayout.closeDrawers();
-                        Intent intent=new Intent(MainActivity.this,OnlinePlay.class);
-                        startActivity(intent);
+
                         break;
                 }
                 return true;
@@ -314,12 +281,10 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         });
         super.onResume();
     }
-
-    private void doScan() {
+    private void doScan(){
         Intent intent = new Intent(MainActivity.this, CaptureActivity.class);
         startActivityForResult(intent, 4);
     }
-
     private long exitTime;
 
     @Override
@@ -344,7 +309,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     }
 
     private void permissionGranted() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
             if (ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission_group.STORAGE) !=
                     PackageManager.PERMISSION_GRANTED) {
                 ActivityCompat.requestPermissions(MainActivity.this, new String[]{
@@ -353,7 +318,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             } else {
                 getData();
             }
-        } else {
+        }else {
             getData();
         }
     }
@@ -362,22 +327,21 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         switch (requestCode) {
             case 10:
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                if (grantResults.length>0&&grantResults[0]==PackageManager.PERMISSION_GRANTED){
                     getData();
-                } else {
-                    Toast.makeText(MainActivity.this, "没有storage权限", Toast.LENGTH_SHORT).show();
+                }else {
+                    Toast.makeText(MainActivity.this,"没有storage权限",Toast.LENGTH_SHORT).show();
                 }
                 break;
             case 11:
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                if (grantResults.length>0&&grantResults[0]==PackageManager.PERMISSION_GRANTED){
                     doScan();
-                } else {
-                    Toast.makeText(MainActivity.this, "没有carema权限", Toast.LENGTH_SHORT).show();
+                }else {
+                    Toast.makeText(MainActivity.this,"没有carema权限",Toast.LENGTH_SHORT).show();
                 }
                 break;
             default:
                 break;
         }
     }
-
 }

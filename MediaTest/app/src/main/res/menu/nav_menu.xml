@@ -4,14 +4,14 @@
         <item
             android:id="@+id/test"
             android:icon="@mipmap/ic_launcher"
-            android:title="扫码播放" />
+            android:title="在线播放" />
         <item
             android:id="@+id/test2"
             android:icon="@mipmap/ic_launcher"
-            android:title="下载" />
+            android:title="test2" />
         <item
             android:id="@+id/test3"
             android:icon="@mipmap/ic_launcher"
-            android:title="在线播放" />
+            android:title="test3" />
     </group>
 </menu>
