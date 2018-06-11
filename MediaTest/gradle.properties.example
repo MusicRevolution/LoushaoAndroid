@@ -11,5 +11,5 @@ org.gradle.jvmargs=-Xmx1536m
 # This option should only be used with decoupled projects. More details, visit
 # http://www.gradle.org/docs/current/userguide/multi_project_builds.html#sec:decoupled_projects
 # org.gradle.parallel=true
-APP_TOKEN=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJBcHBJZCI6ImxvdXNoYW8wMSIsIlVzZXJJZCI6NTA0NzMsIlRva2VuIjoyNzY0MTczMjksIlRpbWVzdGFtcCI6IjE1MjI1OTAyNjkiLCJleHAiOjE1NTQxMjYyNjl9.fgJX_VaNyxhMJCUIYLU0x35lQAjSXfUo1AV0DcgpFMY
-ONE_HASH=10A7F25625C23E55E7048E8284DF4B6468419009
+APP_TOKEN=
+ONE_HASH=
