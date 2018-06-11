@@ -14,6 +14,9 @@ android {
                 cppFlags "-frtti -fexceptions"
             }
         }
+
+        buildConfigField "String", "TOKEN", "\"${APP_TOKEN}\""
+        buildConfigField "String", "HASH", "\"${ONE_HASH}\""
     }
     packagingOptions {
         exclude 'META-INF/DEPENDENCIES'
@@ -50,9 +53,16 @@ dependencies {
     implementation 'com.github.ctiao:ndkbitmap-armv7a:0.9.21'
     implementation 'com.github.ctiao:ndkbitmap-armv5:0.9.21'
     implementation 'com.github.ctiao:ndkbitmap-x86:0.9.21'
-
+    //二维码
     implementation 'com.github.yuzhiqiang1993:zxing:2.1.8'
+    //视频在线缓存
     implementation 'com.danikula:videocache:2.7.0'
-
+    //retrofit2
+    implementation group: 'com.squareup.retrofit2', name: 'retrofit', version: '2.4.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.4.0'
+    //rxjava
+    implementation group: 'com.squareup.retrofit2', name: 'adapter-rxjava2', version: '2.3.0'
+    implementation group: 'io.reactivex.rxjava2', name: 'rxjava', version: '2.1.10'
+    implementation group: 'io.reactivex.rxjava2', name: 'rxandroid', version: '2.0.2'
 
 }

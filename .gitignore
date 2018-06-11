@@ -65,3 +65,5 @@ fastlane/test_output
 fastlane/readme.md
 /MediaTest/.idea
 /MediaTest/.idea
+MediaTest/gradle.properties
+MediaTest/gradle.properties
