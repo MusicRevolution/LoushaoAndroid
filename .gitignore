@@ -66,3 +66,5 @@ fastlane/readme.md
 /MediaTest/.idea
 MediaTest/gradle.properties
 /MediaTest/app/.externalNativeBuild
+*.iml
+/MediaTest/app/*.iml
