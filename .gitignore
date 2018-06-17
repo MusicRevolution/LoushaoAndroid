@@ -64,13 +64,5 @@ fastlane/screenshots
 fastlane/test_output
 fastlane/readme.md
 /MediaTest/.idea
-MediaTest/gradle.properties
-<<<<<<< HEAD
-MediaTest/gradle.properties
-=======
-/MediaTest/app/.externalNativeBuild
-/MediaTest.iml
-/MediaTest/app/app.iml
->>>>>>> 46a913da7def58b6f7a43d079f93867666cb8576
-MediaTest/gradle.properties
-MediaTest/gradle.properties
+/MediaTest/gradle.properties
+/MediaTest/local.properties
