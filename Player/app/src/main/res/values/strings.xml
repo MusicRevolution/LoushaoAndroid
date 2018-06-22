@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">漏勺</string>
+    <string name="app_version">v1.0 beta</string>
+    <string name="account">账号:</string>
+    <string name="password">密码:</string>
+    <string name="login">登陆</string>
+    <string name="register">注册</string>
+    <string name="logout">注销</string>
+</resources>
