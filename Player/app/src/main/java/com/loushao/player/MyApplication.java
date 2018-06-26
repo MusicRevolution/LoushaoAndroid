@@ -1,9 +1,6 @@
 package com.loushao.player;
 
 import android.app.Application;
-import android.content.Context;
-
-import com.danikula.videocache.HttpProxyCacheServer;
 
 public class MyApplication extends Application {
 
@@ -29,6 +26,7 @@ public class MyApplication extends Application {
 
 
     //videocache
+    /*
     private HttpProxyCacheServer proxy;
 
     public static HttpProxyCacheServer getProxy(Context context) {
@@ -40,7 +38,7 @@ public class MyApplication extends Application {
         return new HttpProxyCacheServer.Builder(this)
                 .maxCacheSize(2047 * 1024 * 1024)//2GB
                 .build();
-    }
+    }*/
 
 
 }

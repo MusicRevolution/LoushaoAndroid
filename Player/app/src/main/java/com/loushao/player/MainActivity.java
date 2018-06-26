@@ -16,8 +16,8 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.FrameLayout;
-import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.loushao.player.adapter.ListViewAdapter;
 import com.loushao.player.bean.ResourceList;
@@ -44,14 +44,14 @@ public class MainActivity extends AppCompatActivity implements ListListener {
     DrawerLayout drawerLayout;
     Database database = new Database(this, "data.db", null, 1);
     @BindView(R.id.listview)
-    ListView listview;
+    MoreListView listview;
     @BindView(R.id.progressBar)
     ProgressBar progressBar;
     @BindView(R.id.detail)
     FrameLayout detail;
 
-    private List<ResourceList.DataBean> lists;
-
+    private List<ResourceList.DataBean> lists = new ArrayList<>();;
+    private int page=1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,7 +62,7 @@ public class MainActivity extends AppCompatActivity implements ListListener {
         setToolbar();
         setNavView(navView);
         showProgress();
-        getData();
+        getData(page);
         setOnClickListener();
     }
 
@@ -76,10 +76,19 @@ public class MainActivity extends AppCompatActivity implements ListListener {
                 openFragment(id);
             }
         });
+        listview.setOnLoadListener(new MoreListView.OnLoadListener() {
+            @Override
+            public void onLoadMore() {
+                page+=1;
+                getData(page);
+            }
+        });
         swipelayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                getData();
+                lists.clear();
+                page=1;
+                getData(1);
             }
         });
     }
@@ -96,8 +105,8 @@ public class MainActivity extends AppCompatActivity implements ListListener {
         transaction.commit();
     }
 
-    private void getData() {
-        GetListModel.getList(1, this);
+    private void getData(int page) {
+        GetListModel.getList(page, this);
     }
 
 
@@ -149,7 +158,7 @@ public class MainActivity extends AppCompatActivity implements ListListener {
 
     @Override
     public void onSuccess(List<ResourceList> list) {
-        lists = new ArrayList<>();
+
         for (int i = 0; i < list.get(0).getData().size(); i++) {
             ResourceList.DataBean dataBean = list.get(0).getData().get(i);
             lists.add(dataBean);
@@ -157,6 +166,11 @@ public class MainActivity extends AppCompatActivity implements ListListener {
         hideProgress();
         ListViewAdapter adapter = new ListViewAdapter(MainActivity.this, lists);
         listview.setAdapter(adapter);
+        listview.setLoadCompleted();
+        if (page!=1){
+            int position=(page-1)*6-1;
+            listview.setSelection(position);
+        }
     }
 
     @Override
@@ -170,24 +184,8 @@ public class MainActivity extends AppCompatActivity implements ListListener {
 
     public void hideProgress() {
         swipelayout.setRefreshing(false);
+        Toast.makeText(MainActivity.this,"加载完成",Toast.LENGTH_SHORT).show();
         progressBar.setVisibility(View.GONE);
     }
-/*
-    private long exitTime;
 
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK) {
-            if ((System.currentTimeMillis() - exitTime) > 2000) {//
-                // 如果两次按键时间间隔大于2000毫秒，则不退出
-                Toast.makeText(this, "再按一次退出程序", Toast.LENGTH_SHORT).show();
-                exitTime = System.currentTimeMillis();// 更新mExitTime
-            } else {
-                finish();
-            }
-            return true;
-        }
-        return super.onKeyDown(keyCode, event);
-    }
-    */
 }

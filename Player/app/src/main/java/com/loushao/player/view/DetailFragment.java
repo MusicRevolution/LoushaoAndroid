@@ -50,13 +50,13 @@ public class DetailFragment extends Fragment {
     FrameLayout playLayout;
 
     private List<AnimeDetail.ResourcesBean> list;
-
+    int id;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_anime_detail, container, false);
         unbinder = ButterKnife.bind(this, view);
-        int id = (int) getArguments().get("id");
+        id = (int) getArguments().get("id");
         getData(id);
         return view;
     }
@@ -115,6 +115,12 @@ public class DetailFragment extends Fragment {
                         //Log.e(TAG, "accept: "+s );
                     }
                 });
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        getData(id);
     }
 
     @Override
