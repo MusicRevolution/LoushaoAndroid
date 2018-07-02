@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.loushao.player.Database;
@@ -24,6 +25,8 @@ public class Login extends AppCompatActivity implements LoginListener {
     EditText edtAccount;
     @BindView(R.id.edt_Password)
     EditText edtPassword;
+    @BindView(R.id.loginProgress)
+    ProgressBar loginProgress;
     private String username;
     private String password;
 
@@ -47,11 +50,13 @@ public class Login extends AppCompatActivity implements LoginListener {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.btn_Login:
+                showProgress();
                 username = edtAccount.getText().toString();
                 password = edtPassword.getText().toString();
                 LoginModel.getToken(username, password, this);
                 break;
             case R.id.btn_Register:
+                Toast.makeText(this,"暂无接口",Toast.LENGTH_SHORT).show();
                 break;
         }
     }
@@ -68,6 +73,13 @@ public class Login extends AppCompatActivity implements LoginListener {
 
     @Override
     public void onFailure(String msg) {
+        hideProgress();
         Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
+    }
+    private void showProgress(){
+        loginProgress.setVisibility(View.VISIBLE);
+    }
+    private void hideProgress(){
+        loginProgress.setVisibility(View.INVISIBLE);
     }
 }

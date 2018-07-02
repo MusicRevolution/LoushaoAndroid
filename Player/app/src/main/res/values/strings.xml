@@ -6,4 +6,6 @@
     <string name="login">登陆</string>
     <string name="register">注册</string>
     <string name="logout">注销</string>
+    <string name="main">主页</string>
+    <string name="download">下载</string>
 </resources>

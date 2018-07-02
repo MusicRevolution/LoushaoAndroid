@@ -4,7 +4,7 @@ android {
     compileSdkVersion 27
     defaultConfig {
         applicationId "com.loushao.player"
-        minSdkVersion 21
+        minSdkVersion 18
         targetSdkVersion 27
         versionCode 1
         versionName "1.0"
@@ -42,10 +42,6 @@ dependencies {
     implementation 'com.android.support:design:27.1.1'
     implementation group: 'com.jakewharton', name: 'butterknife', version: '8.8.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
-    //视频在线缓存
-    //implementation 'com.danikula:videocache:2.7.0'
-    // mediaplayer
-    //implementation 'cn.jzvd:jiaozivideoplayer:6.2.10'
 
     implementation 'com.shuyu:GSYVideoPlayer:5.0.0-beta'
     //ftp

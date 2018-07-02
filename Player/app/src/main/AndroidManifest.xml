@@ -37,7 +37,7 @@
             android:screenOrientation="portrait" />
 
         <service
-            android:name=".DownloadService"
+            android:name=".download.DownloadService"
             android:enabled="true"
             android:exported="true"></service>
     </application>

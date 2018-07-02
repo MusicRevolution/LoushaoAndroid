@@ -7,5 +7,5 @@ public class Constants {
         System.loadLibrary("native-lib");
     }
     public static final native String baseUrl();
-    public static String basePath= Environment.getExternalStorageDirectory().getAbsolutePath() + "/LouShao";
+    public static String basePath= Environment.getExternalStorageDirectory().getAbsolutePath() + "/LouShao/";
 }

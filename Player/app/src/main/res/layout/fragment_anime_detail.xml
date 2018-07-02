@@ -47,7 +47,7 @@
                 android:layout_height="wrap_content"
                 android:textSize="18sp"
                 android:text="" />
-            <ListView
+            <com.loushao.player.DetialListView
                 android:layout_marginTop="20dp"
                 android:layout_marginBottom="20dp"
                 android:id="@+id/resource_list"

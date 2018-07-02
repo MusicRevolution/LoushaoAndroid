@@ -4,11 +4,11 @@
         <item
             android:id="@+id/test"
             android:icon="@mipmap/ic_launcher"
-            android:title="扫码播放" />
+            android:title="@string/main" />
         <item
             android:id="@+id/test2"
             android:icon="@mipmap/ic_launcher"
-            android:title="下载" />
+            android:title="@string/download" />
         <item
             android:id="@+id/test3"
             android:icon="@mipmap/ic_launcher"

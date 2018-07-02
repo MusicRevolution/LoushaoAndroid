@@ -17,7 +17,6 @@ import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.FrameLayout;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
 import com.loushao.player.adapter.ListViewAdapter;
 import com.loushao.player.bean.ResourceList;
@@ -184,7 +183,7 @@ public class MainActivity extends AppCompatActivity implements ListListener {
 
     public void hideProgress() {
         swipelayout.setRefreshing(false);
-        Toast.makeText(MainActivity.this,"加载完成",Toast.LENGTH_SHORT).show();
+        //Toast.makeText(MainActivity.this,"加载完成",Toast.LENGTH_SHORT).show();
         progressBar.setVisibility(View.GONE);
     }
 

@@ -12,10 +12,10 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.loushao.player.DetialListView;
 import com.loushao.player.R;
 import com.loushao.player.adapter.ResourceListAdapter;
 import com.loushao.player.bean.AnimeDetail;
@@ -45,7 +45,7 @@ public class DetailFragment extends Fragment {
     TextView txtContent;
     Unbinder unbinder;
     @BindView(R.id.resource_list)
-    ListView resourceList;
+    DetialListView resourceList;
     @BindView(R.id.play_layout)
     FrameLayout playLayout;
 
@@ -83,7 +83,8 @@ public class DetailFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Log.e(TAG, "onItemClick: " + list.get(i).getUrl());
-                PlayerActivity.start(getContext(),list.get(i).getTitle(),list.get(i).getUrl(),list.get(i).getFilesize());
+                PlayerActivity.start(getContext(),list.get(i).getTitle(),list.get(i).getUrl(),
+                        list.get(i).getFilesize(),list.get(i).getId());
             }
         });
     }
@@ -109,8 +110,9 @@ public class DetailFragment extends Fragment {
                         setTxtTitle(data.getTitle());
                         setTxtContent(content);
                         setImgBig(s);
-                        setList(animeDetail.getResources());
                         list = animeDetail.getResources();
+                        //Log.e(TAG, "accept: "+list.size() );
+                        setList(list);
                         setListItemListener();
                         //Log.e(TAG, "accept: "+s );
                     }
